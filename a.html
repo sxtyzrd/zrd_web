@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>我的个人网站</title>
+    
+    <!-- CSS CDN -->
+    <link href="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-color: #007BFF;
+            --text-color: #333333;
+            --bg-color: #FFFFFF;
+            --bg-light: #F8F9FA;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            color: var(--text-color);
+            background-color: var(--bg-color);
+        }
+
+        /* 导航栏样式 */
+        .navbar {
+            background-color: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .navbar-brand {
+            font-weight: bold;
+            color: var(--primary-color) !important;
+        }
+
+        .nav-link {
+            color: var(--text-color) !important;
+            transition: color 0.3s;
+        }
+
+        .nav-link:hover {
+            color: var(--primary-color) !important;
+        }
+
+        /* 轮播图样式 */
+        .carousel {
+            margin-top: 56px;
+        }
+
+        .carousel-item {
+            height: 500px;
+        }
+
+        .carousel-item img {
+            object-fit: cover;
+            height: 100%;
+            width: 100%;
+        }
+
+        .carousel-caption {
+            background: rgba(0,0,0,0.5);
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        /* 个人简介区样式 */
+        .profile-section {
+            padding: 60px 0;
+            background-color: var(--bg-light);
+        }
+
+        .profile-card {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            padding: 30px;
+            text-align: center;
+            transition: transform 0.3s;
+        }
+
+        .profile-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .profile-image {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            margin-bottom: 20px;
+            object-fit: cover;
+        }
+
+        .tag {
+            display: inline-block;
+            padding: 5px 10px;
+            margin: 5px;
+            background-color: var(--primary-color);
+            color: white;
+            border-radius: 20px;
+            font-size: 0.9em;
+        }
+
+        /* 社交媒体图标样式 */
+        .social-links {
+            padding: 40px 0;
+        }
+
+        .social-icon {
+            font-size: 2em;
+            color: var(--text-color);
+            margin: 0 15px;
+            transition: all 0.3s;
+        }
+
+        .social-icon:hover {
+            color: var(--primary-color);
+            transform: scale(1.2);
+        }
+
+        /* 页脚样式 */
+        footer {
+            background-color: var(--bg-light);
+            padding: 20px 0;
+            text-align: center;
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .carousel-item {
+                height: 300px;
+            }
+
+            .profile-card {
+                margin: 20px;
+            }
+
+            .social-icon {
+                font-size: 1.5em;
+                margin: 0 10px;
+            }
+        }
+
+        /* 对话界面样式 */
+        .chat-section {
+            padding: 60px 0;
+            background-color: var(--bg-color);
+        }
+
+        .chat-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column;
+            height: 600px;
+        }
+
+        .chat-messages {
+            flex-grow: 1;
+            overflow-y: auto;
+            padding: 20px;
+        }
+
+        .message {
+            margin-bottom: 20px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .message.user {
+            align-items: flex-end;
+        }
+
+        .message.ai {
+            align-items: flex-start;
+        }
+
+        .message-content {
+            max-width: 80%;
+            padding: 12px 16px;
+            border-radius: 15px;
+            margin-bottom: 5px;
+        }
+
+        .message.user .message-content {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .message.ai .message-content {
+            background-color: var(--bg-light);
+            color: var(--text-color);
+        }
+
+        .message-time {
+            font-size: 0.8em;
+            color: #666;
+        }
+
+        .chat-input-container {
+            padding: 20px;
+            border-top: 1px solid #eee;
+            display: flex;
+            align-items: flex-end;
+            gap: 10px;
+        }
+
+        .chat-input {
+            flex-grow: 1;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            padding: 12px;
+            resize: none;
+            max-height: 150px;
+            min-height: 44px;
+            line-height: 1.5;
+        }
+
+        .chat-input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+
+        .chat-send-btn {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 44px;
+            height: 44px;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .chat-send-btn:hover {
+            transform: scale(1.1);
+        }
+
+        /* 加载动画 */
+        .typing-indicator {
+            display: none;
+            padding: 12px 16px;
+            background: var(--bg-light);
+            border-radius: 15px;
+            margin-bottom: 20px;
+            width: fit-content;
+        }
+
+        .typing-indicator span {
+            width: 8px;
+            height: 8px;
+            background: #666;
+            display: inline-block;
+            border-radius: 50%;
+            margin: 0 2px;
+            animation: bounce 1.4s infinite ease-in-out;
+        }
+
+        .typing-indicator span:nth-child(2) { animation-delay: 0.2s; }
+        .typing-indicator span:nth-child(3) { animation-delay: 0.4s; }
+    </style>
+</head>
+<body>
+    <!-- 导航栏 -->
+    <nav class="navbar navbar-expand-lg fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="#">John Doe</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#home">首页</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#profile">关于我</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#contact">联系方式</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 轮播图 -->
+    <section id="home">
+        <div id="mainCarousel" class="carousel slide" data-bs-ride="carousel">
+            <div class="carousel-indicators">
+                <button type="button" data-bs-target="#mainCarousel" data-bs-slide-to="0" class="active"></button>
+                <button type="button" data-bs-target="#mainCarousel" data-bs-slide-to="1"></button>
+                <button type="button" data-bs-target="#mainCarousel" data-bs-slide-to="2"></button>
+            </div>
+            <div class="carousel-inner">
+                <div class="carousel-item active">
+                    <img src="https://via.placeholder.com/1920x1080" class="d-block w-100" alt="...">
+                    <div class="carousel-caption">
+                        <h5>欢迎来到我的个人网站</h5>
+                        <p>这里是我展示个人作品和分享想法的地方</p>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <img src="https://via.placeholder.com/1920x1080" class="d-block w-100" alt="...">
+                    <div class="carousel-caption">
+                        <h5>我的项目</h5>
+                        <p>展示我的最新作品和项目</p>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <img src="https://via.placeholder.com/1920x1080" class="d-block w-100" alt="...">
+                    <div class="carousel-caption">
+                        <h5>技术博客</h5>
+                        <p>分享我的技术心得和经验</p>
+                    </div>
+                </div>
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#mainCarousel" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon"></span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#mainCarousel" data-bs-slide="next">
+                <span class="carousel-control-next-icon"></span>
+            </button>
+        </div>
+    </section>
+
+    <!-- 个人简介 -->
+    <section id="profile" class="profile-section">
+        <div class="container">
+            <div class="profile-card">
+                <img src="https://via.placeholder.com/150" alt="个人头像" class="profile-image">
+                <h2>John Doe</h2>
+                <p class="lead">全栈开发工程师</p>
+                <p>热爱技术，专注于Web开发和人工智能领域</p>
+                <div class="tags">
+                    <span class="tag">JavaScript</span>
+                    <span class="tag">Python</span>
+                    <span class="tag">React</span>
+                    <span class="tag">Node.js</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- AI对话界面 -->
+    <section id="chat" class="chat-section">
+        <div class="container">
+            <div class="chat-container">
+                <div class="chat-messages" id="messageArea">
+                    <!-- 消息将在这里动态添加 -->
+                </div>
+                <div class="chat-input-container">
+                    <textarea 
+                        id="userInput" 
+                        class="chat-input" 
+                        placeholder="输入消息..." 
+                        rows="1"
+                    ></textarea>
+                    <button class="chat-send-btn" onclick="sendMessage()">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 社交媒体链接 -->
+    <section id="contact" class="social-links">
+        <div class="container text-center">
+            <a href="#" class="social-icon"><i class="fab fa-github"></i></a>
+            <a href="#" class="social-icon"><i class="fab fa-linkedin"></i></a>
+            <a href="#" class="social-icon"><i class="fab fa-weibo"></i></a>
+            <a href="#" class="social-icon"><i class="fab fa-weixin"></i></a>
+        </div>
+    </section>
+
+    <!-- 页脚 -->
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 John Doe. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- JS CDN -->
+    <script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/jsrsasign/10.5.23/jsrsasign-all-min.js"></script>
+
+    <script>
+        // API配置
+        const API_KEY = '880d8a4a63209d0ddefa1be118d2f067.GWz4hagb19czgR2U';
+        
+        // 生成JWT token的函数
+        function generateToken(apiKey) {
+            try {
+                const [id, secret] = apiKey.split('.');
+                
+                // 创建header
+                const header = {
+                    alg: 'HS256',
+                    sign_type: 'SIGN'
+                };
+                
+                // 创建payload
+                const payload = {
+                    api_key: id,
+                    exp: Date.now() + 3600000, // 1小时后过期
+                    timestamp: Date.now()
+                };
+                
+                // 使用jsrsasign库生成JWT
+                const token = KJUR.jws.JWS.sign(
+                    'HS256',
+                    JSON.stringify(header),
+                    JSON.stringify(payload),
+                    secret
+                );
+                
+                return token;
+            } catch (error) {
+                console.error('生成token失败:', error);
+                return null;
+            }
+        }
+
+        // 平滑滚动
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // 微信二维码弹窗
+        document.querySelector('.fa-weixin').parentElement.addEventListener('click', function(e) {
+            e.preventDefault();
+            // 这里可以添加显示微信二维码的逻辑
+            alert('微信二维码');
+        });
+
+        // 更新sendMessage函数
+        async function sendMessage() {
+            const input = document.getElementById('userInput');
+            const text = input.value.trim();
+            
+            if (text === '') return;
+            
+            // 添加用户消息
+            addMessage(text, 'user');
+            input.value = '';
+            adjustTextareaHeight(input);
+
+            // 显示AI正在输入的动画
+            const typingIndicator = document.createElement('div');
+            typingIndicator.className = 'typing-indicator';
+            typingIndicator.innerHTML = '<span></span><span></span><span></span>';
+            document.getElementById('messageArea').appendChild(typingIndicator);
+            typingIndicator.style.display = 'block';
+
+            try {
+                // 生成token
+                const token = generateToken(API_KEY);
+                
+                if (!token) {
+                    throw new Error('Token generation failed');
+                }
+
+                // 发送API请求
+                const response = await fetch('https://open.bigmodel.cn/api/paas/v4/chat/completions', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({
+                        model: "glm-4",
+                        messages: [
+                            { role: "user", content: text }
+                        ]
+                    })
+                });
+
+                const data = await response.json();
+                
+                // 移除加载动画
+                typingIndicator.remove();
+
+                if (data.choices && data.choices[0] && data.choices[0].message) {
+                    addMessage(data.choices[0].message.content, 'ai');
+                } else {
+                    throw new Error('Invalid response from API');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                typingIndicator.remove();
+                addMessage('抱歉，发生了一些错误。请稍后再试。', 'ai');
+            }
+        }
+
+        // 添加消息到对话区域
+        function addMessage(text, type) {
+            const messageArea = document.getElementById('messageArea');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${type}`;
+            
+            const time = new Date().toLocaleTimeString();
+            
+            messageDiv.innerHTML = `
+                <div class="message-content">${text}</div>
+                <div class="message-time">${time}</div>
+            `;
+            
+            messageArea.appendChild(messageDiv);
+            messageArea.scrollTop = messageArea.scrollHeight;
+        }
+
+        // 自动调整输入框高度
+        function adjustTextareaHeight(textarea) {
+            textarea.style.height = 'auto';
+            textarea.style.height = Math.min(textarea.scrollHeight, 150) + 'px';
+        }
+
+        // 监听输入框变化
+        document.getElementById('userInput').addEventListener('input', function() {
+            adjustTextareaHeight(this);
+        });
+
+        // 处理回车发送
+        document.getElementById('userInput').addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                sendMessage();
+            }
+        });
+    </script>
+</body>
+</html>
